@@ -22,21 +22,64 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class ShipIcon : MonoBehaviour {
+public class ShipIcon : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler {
+
+    public delegate void StartDragAction(GameObject obj);
+    public event StartDragAction StartDrag = delegate { };
 
     private Ship _ship = null;
 
-    public void SetShip(Ship ship) {
-        _ship = ship;
+    private Vector2 _from = Vector2.zero;
+    private bool _wasDraged = false;
+    private Vector3 _dragDelta = Vector2.zero;
+
+    public Ship Ship{
+        get { return _ship; }
+        set { _ship = value; }
     }
 
     private void OnDestroy() {
-        SetShip(null);
+        Ship = null;
     }
 
-    public void OnClic() {
+    public void OnBeginDrag(PointerEventData eventData) {
+        StartDrag(gameObject);
+        _dragDelta = Input.mousePosition - transform.position;
+        _wasDraged = false;
+        _from = transform.position;
+        GetComponent<CanvasGroup>().blocksRaycasts = false;
+    }
+    
+    public void OnDrag(PointerEventData eventData) {
+        _wasDraged = true;
+
+        Vector3 inputPosition = Input.mousePosition - _dragDelta;
+
+        Vector2 localPoint;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(transform.parent.GetComponent<RectTransform>(), inputPosition, null, out localPoint);
+
+        transform.position = inputPosition;
+    }
+
+    public void OnEndDrag(PointerEventData eventData) {
+        StartDrag(null);
+        _wasDraged = false;
+        transform.position = _from;
+        GetComponent<CanvasGroup>().blocksRaycasts = true;
+    }
+
+
+    public void OnPointerClick(PointerEventData eventData) {
+        if (!_wasDraged) {
+            OnClic();
+        }
+    }
+
+    private void OnClic() {
         if(null != _ship) {
             WindowSystem ws = FindObjectOfType<WindowSystem>();
             PrefabManager pm = FindObjectOfType<PrefabManager>();

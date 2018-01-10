@@ -98,19 +98,28 @@ public class ShipView : MonoBehaviour {
 
     private void ShowInfos() {
         infoZone.gameObject.SetActive(true);
+        infoButton.GetComponent<Image>().color = Color.red;
         planningZone.gameObject.SetActive(false);
+        planningButton.GetComponent<Image>().color = Color.white;
         logsZone.gameObject.SetActive(false);
+        logsButton.GetComponent<Image>().color = Color.white;
     }
 
     private void ShowPlanning() {
         infoZone.gameObject.SetActive(false);
+        infoButton.GetComponent<Image>().color = Color.white;
         planningZone.gameObject.SetActive(true);
+        planningButton.GetComponent<Image>().color = Color.red;
         logsZone.gameObject.SetActive(false);
+        logsButton.GetComponent<Image>().color = Color.white;
     }
 
     private void ShowLogs() {
         infoZone.gameObject.SetActive(false);
+        infoButton.GetComponent<Image>().color = Color.white;
         planningZone.gameObject.SetActive(false);
+        planningButton.GetComponent<Image>().color = Color.white;
         logsZone.gameObject.SetActive(true);
+        logsButton.GetComponent<Image>().color = Color.red;
     }
 }

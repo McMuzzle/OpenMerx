@@ -24,6 +24,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -43,7 +44,16 @@ public class HangarView : MonoBehaviour {
     [SerializeField] ResourceIcon resourceIconPrefab = null;
     [SerializeField] GridLayoutGroup resourcesGrid = null;
 
+    [SerializeField, Tooltip("target ou mettre les vaisseaux de la flotte")]
+    Transform fleetContent = null;
+
+    [SerializeField, Tooltip("le prefab d'une ligne dans la liste de flotte")]
+    HangarFleetShipItem fleetLinePrefab = null;
+
     Hangar _hangar = null;
+    public GameObject _dragedIcon = null;
+
+    private List<Ship> _currentFleet = new List<Ship>();
 
     private void Start() {
         LocalDataManager.instance.OnHangarChange += OnhangarChange;
@@ -69,13 +79,16 @@ public class HangarView : MonoBehaviour {
     public void OnStartFleet() {
         int hangarID = _hangar.ID;
 
+        if (_currentFleet.Count == 0)
+            return;
+
         List<int> shipIDs = new List<int>();
-        foreach (int i in _hangar.Ships) {
-            Ship s = LocalDataManager.instance.GetShipInfo(i);
-            if(s.Fleet <= 0) {
-                shipIDs.Add(i);
-            }
+        foreach(Ship s in _currentFleet) {
+            shipIDs.Add(s.ID);
         }
+
+        _currentFleet.Clear();
+        UpdateFleet();
 
         PrefabManager pm = FindObjectOfType<PrefabManager>();
         WindowSystem ws = FindObjectOfType<WindowSystem>();
@@ -85,6 +98,31 @@ public class HangarView : MonoBehaviour {
 
         Window w = ws.NewWindow("editFleetPlan", editor.gameObject);
         w.Show();
+    }
+
+    public void AddShipToFleet(Ship ship) {
+        int count = _currentFleet.Where(s => s.ID == ship.ID).ToList().Count;
+        if (count == 0) {
+            _currentFleet.Add(ship);
+            UpdateFleet();
+        }
+    }
+
+    public void RemoveShipFromFleet(Ship ship) {
+        _currentFleet.RemoveAll((s) => s.ID == ship.ID);
+        UpdateFleet();
+    }
+
+    private void UpdateFleet() {
+        while(fleetContent.transform.childCount > 0) {
+            Transform t = fleetContent.transform.GetChild(0);
+            t.SetParent(null);
+            Destroy(t.gameObject);
+        }
+        foreach (Ship s in _currentFleet) {
+            HangarFleetShipItem line = Instantiate(fleetLinePrefab, fleetContent);
+            line.Ship = s;
+        }
     }
 
     private IEnumerator WaitForHangar() {
@@ -142,8 +180,9 @@ public class HangarView : MonoBehaviour {
         //recuperer tous les vaisseaux dans ce hangar
         foreach (int i in _hangar.Ships) {
             ShipIcon icon = Instantiate(shipIconPrefab);
+            icon.StartDrag += (o) => { _dragedIcon = o; };
             Ship s = LocalDataManager.instance.GetShipInfo(i);
-            icon.SetShip(s);
+            icon.Ship = s;
             icon.transform.SetParent(shipGrid.transform);
         }        
     }
@@ -163,19 +202,28 @@ public class HangarView : MonoBehaviour {
 
     private void ShowResources() {
         resourcePart.gameObject.SetActive(true);
+        resourceTab.GetComponent<Image>().color = Color.red;
         shipPart.gameObject.SetActive(false);
+        shipTab.GetComponent<Image>().color = Color.white;
         marketPart.gameObject.SetActive(false);
+        marketTab.GetComponent<Image>().color = Color.white;
     }
 
     private void ShowShips() {
         resourcePart.gameObject.SetActive(false);
+        resourceTab.GetComponent<Image>().color = Color.white;
         shipPart.gameObject.SetActive(true);
+        shipTab.GetComponent<Image>().color = Color.red;
         marketPart.gameObject.SetActive(false);
+        marketTab.GetComponent<Image>().color = Color.white;
     }
 
     private void ShowMarket() {
         resourcePart.gameObject.SetActive(false);
+        resourceTab.GetComponent<Image>().color = Color.white;
         shipPart.gameObject.SetActive(false);
+        shipTab.GetComponent<Image>().color = Color.white;
         marketPart.gameObject.SetActive(true);
+        marketTab.GetComponent<Image>().color = Color.red;
     }
 }

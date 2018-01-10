@@ -84,11 +84,11 @@ public class ToolsView : MonoBehaviour {
         ToolButton options = Instantiate(buttonPrefab, buttonGrid);
         options.SetTitle("Menu");
         options.GetComponent<Button>().onClick.AddListener(() => OnMenuClic());        
-
+/*
         ToolButton console = Instantiate(buttonPrefab, buttonGrid);
         console.SetTitle("Console");
         console.GetComponent<Button>().onClick.AddListener(() => OnConsoleClic());
-
+*/
         OnCorpChange(null);
     }
 
@@ -119,7 +119,7 @@ public class ToolsView : MonoBehaviour {
         ShipList view = Instantiate<ShipList>(pref.prefabShipListView);
 
         Window w = sys.NewWindow("myShipList", view.gameObject);
-        w.Title = "Vaisseaux";
+        w.Title = "Ships";
         w.Show();
     }
 
