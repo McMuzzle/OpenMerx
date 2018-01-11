@@ -27,7 +27,7 @@ public class StartNode : ExecutableNode{
     public StartNode(Fleet f, NodalEditor.SaveStruct nodes, int nodeIndex, SimulatedWideDataManager.SerializeContainer data) : base(f,nodes,nodeIndex,data) {
     }
 
-    public override int Update(ServerUpdate serverUpdate) {
+    public override int Update(WideDataManager manager, ServerUpdate serverUpdate) {
 
         SimulatedWideDataManager.SerializeContainer data = SimulatedWideDataManager.Container;
 

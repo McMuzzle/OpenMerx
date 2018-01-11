@@ -72,7 +72,7 @@ public class SimulatedShipManager{
         NodalEditor.SaveStruct s = Newtonsoft.Json.JsonConvert.DeserializeObject<NodalEditor.SaveStruct>(f.Data);
         if (s.nodes.ContainsKey(f.CurrentNode)) {
             ExecutableNode node = ExecutableNodeFactory.GetNode(f, s, f.CurrentNode);
-            int result = node.Update(_currentUpdate);
+            int result = node.Update(_manager,_currentUpdate);
             f.Data = Newtonsoft.Json.JsonConvert.SerializeObject(s);
             return result; 
         }

@@ -28,7 +28,7 @@ public class LoopNode : ExecutableNode{
     public LoopNode(Fleet f, NodalEditor.SaveStruct nodes, int nodeIndex, SimulatedWideDataManager.SerializeContainer data) : base(f,nodes,nodeIndex,data) {
     }
 
-    public override int Update(ServerUpdate serverUpdate) {
+    public override int Update(WideDataManager manager, ServerUpdate serverUpdate) {
 
         int doneLoop = _fleet.FleetParams.GetInt("doneLoop", 0);
         int loopToDo = 2;

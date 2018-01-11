@@ -32,7 +32,7 @@ public class MineNode : ExecutableNode{
     public MineNode(Fleet f, NodalEditor.SaveStruct nodes, int nodeIndex, SimulatedWideDataManager.SerializeContainer data) : base(f,nodes,nodeIndex,data) {
     }
 
-    public override int Update(ServerUpdate serverUpdate) {
+    public override int Update(WideDataManager manager, ServerUpdate serverUpdate) {
         MoveFlow(OutFlow);
 
         return _fleet.LastUpdateFrame;

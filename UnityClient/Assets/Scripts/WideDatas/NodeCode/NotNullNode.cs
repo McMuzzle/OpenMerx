@@ -31,7 +31,7 @@ public class NotNull : ExecutableNode, IBooleanParam{
     public NotNull(Fleet f, NodalEditor.SaveStruct nodes, int nodeIndex, SimulatedWideDataManager.SerializeContainer data) : base(f,nodes,nodeIndex,data) {
     }
 
-    public override int Update(ServerUpdate serverUpdate) {
+    public override int Update(WideDataManager manager, ServerUpdate serverUpdate) {
         throw new System.Exception("NotNull node should never get the Flow focus");
     }
 

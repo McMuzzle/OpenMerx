@@ -86,18 +86,18 @@ public class NodalEditor : MonoBehaviour, IPointerClickHandler {
         prefabEnd.inputs.Add(new ParamInfos(ParamInfos.ParamType.ParamFlow, ParamInfos.ParamDirection.ParamIn, ParamInfos.ParamConnectType.Param0_N, "EndInput"));
         prefabs.Add(prefabEnd.nodeName, prefabEnd);
 
-        NodePrefabInfos prefabStationSelector = new NodePrefabInfos();
-        prefabStationSelector.nodeName = "Hangar selector";
-        prefabStationSelector.Configs.Add("hangarID", "Hangars");
-        prefabStationSelector.outputs.Add(new ParamInfos(ParamInfos.ParamType.ParamHangar, ParamInfos.ParamDirection.ParamOut, ParamInfos.ParamConnectType.Param0_N, "station"));
-        prefabs.Add(prefabStationSelector.nodeName, prefabStationSelector);
+        NodePrefabInfos prefabHangarSelector = new NodePrefabInfos();
+        prefabHangarSelector.nodeName = "Hangar selector";
+        prefabHangarSelector.Configs.Add("hangarID", "Hangars");
+        prefabHangarSelector.outputs.Add(new ParamInfos(ParamInfos.ParamType.ParamHangar, ParamInfos.ParamDirection.ParamOut, ParamInfos.ParamConnectType.Param0_N, "station"));
+        prefabs.Add(prefabHangarSelector.nodeName, prefabHangarSelector);
 
         NodePrefabInfos prefabExplore = new NodePrefabInfos();
         prefabExplore.nodeName = "Explore";
-        prefabExplore.inputs.Add(new ParamInfos(ParamInfos.ParamType.ParamFlow, ParamInfos.ParamDirection.ParamIn, ParamInfos.ParamConnectType.Param1_N,"ExploreInput"));
-        prefabExplore.outputs.Add(new ParamInfos(ParamInfos.ParamType.ParamFlow, ParamInfos.ParamDirection.ParamOut, ParamInfos.ParamConnectType.Param1_1, "ExploreOutput"));
-        prefabExplore.outputs.Add(new ParamInfos(ParamInfos.ParamType.ParamBookmark, ParamInfos.ParamDirection.ParamOut, ParamInfos.ParamConnectType.Param0_N, "FoundLocation"));
-        prefabExplore.outputs.Add(new ParamInfos(ParamInfos.ParamType.ParamBoolean, ParamInfos.ParamDirection.ParamOut, ParamInfos.ParamConnectType.Param0_N, "FoundSomtingh"));
+        prefabExplore.inputs.Add(new ParamInfos(ParamInfos.ParamType.ParamFlow, ParamInfos.ParamDirection.ParamIn, ParamInfos.ParamConnectType.Param1_N,ExploreNode.InFlow));
+        prefabExplore.outputs.Add(new ParamInfos(ParamInfos.ParamType.ParamFlow, ParamInfos.ParamDirection.ParamOut, ParamInfos.ParamConnectType.Param1_1, ExploreNode.OutFlow));
+        prefabExplore.outputs.Add(new ParamInfos(ParamInfos.ParamType.ParamBookmark, ParamInfos.ParamDirection.ParamOut, ParamInfos.ParamConnectType.Param0_N, ExploreNode.FoundBookmark));
+        prefabExplore.outputs.Add(new ParamInfos(ParamInfos.ParamType.ParamBoolean, ParamInfos.ParamDirection.ParamOut, ParamInfos.ParamConnectType.Param0_N, ExploreNode.FoundResult));
         prefabs.Add(prefabExplore.nodeName, prefabExplore);
         
         NodePrefabInfos prefabMine = new NodePrefabInfos();

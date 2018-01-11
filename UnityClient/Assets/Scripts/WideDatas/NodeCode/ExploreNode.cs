@@ -26,12 +26,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class ExploreNode : ExecutableNode, IBookmarkParam{
+public class ExploreNode : ExecutableNode, IBookmarkParam, IBooleanParam{
+    
+    public const string InFlow = "inFlow";
+    public const string OutFlow = "outFlow";
+    public const string FoundBookmark = "bookMark";
+    public const string FoundResult = "foundResult";
 
     public ExploreNode(Fleet f, NodalEditor.SaveStruct nodes, int nodeIndex, SimulatedWideDataManager.SerializeContainer data) : base(f,nodes,nodeIndex,data) {
     }
 
     public Bookmark GetBookmark(string paramName) {
+        if (paramName != InFlow)
+            throw new Exception(paramName + " is not a bookmark param in ExploreNode");
+
         NodeInfos n = _nodes.nodes[_myID];
         int id = n.nodeParams.GetInt("found", -1);
         if(id != -1) {
@@ -40,7 +48,19 @@ public class ExploreNode : ExecutableNode, IBookmarkParam{
         return null;
     }
 
-    public override int Update(ServerUpdate serverUpdate) {
+    public bool GetBool(string paramName) {
+        if (paramName != FoundResult)
+            throw new Exception(paramName + " is not bool param in exploreNode");
+
+        NodeInfos n = _nodes.nodes[_myID];
+        int id = n.nodeParams.GetInt("found", -1);
+        if(id == -1) {
+            return false;
+        }
+        return true;
+    }
+
+    public override int Update(WideDataManager manager, ServerUpdate serverUpdate) {
 
         if (_data._currentFrame < _fleet.NextUpdateFrame)
             return _fleet.NextUpdateFrame;
@@ -102,13 +122,11 @@ public class ExploreNode : ExecutableNode, IBookmarkParam{
 
                     n.nodeParams.Set("found", bookmark.ID);
 
-/*
-                    Corporation c = _container._corps[s.Corp];
+                    Corporation c = _data._corps[_fleet.CorpID];
                     SendMailRequest request = new SendMailRequest(-1, c.Owner);
                     request.Message = "You found something while exploring, congrat! \n\n" + found.Description;
                     request.Subject = "Exploration result";
-                    _manager.SendRequest(request);
-*/
+                    manager.SendRequest(request);
                 }
 
                 foreach (int sID in _fleet.ShipIDs) {
@@ -137,7 +155,7 @@ public class ExploreNode : ExecutableNode, IBookmarkParam{
                     Ship ship = _data._ships[sID];
                     ship.Status = "Idle in station";
                 }
-                MoveFlow("ExploreOutput");
+                MoveFlow(ExploreNode.OutFlow);
             }
             break;
         }

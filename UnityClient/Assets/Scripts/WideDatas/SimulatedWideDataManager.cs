@@ -483,7 +483,7 @@ public class SimulatedWideDataManager : WideDataManager {
         //tester que les vaisseaux sont disponibles 
 
         Fleet fleet = new Fleet(_container._fleetIDs++);
-        _container._fleets.Add(fleet.ID, fleet);
+        _container._fleets.Add(fleet.ID, fleet);        
         fleet.Data = f.Data;
         fleet.CurrentNode = 0;
         fleet.NextUpdateFrame = _container._currentFrame;
@@ -498,6 +498,7 @@ public class SimulatedWideDataManager : WideDataManager {
             Ship ship = _container._ships[s];
             ship.Fleet = fleet.ID;
             f.Ships.Add(ship);
+            fleet.CorpID = ship.Corp;
         }
         f.Fleet = fleet;
 

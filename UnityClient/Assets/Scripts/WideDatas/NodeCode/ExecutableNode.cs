@@ -38,7 +38,7 @@ public abstract class ExecutableNode {
         _fleet = f;
     }
 
-    public abstract int Update(ServerUpdate serverUpdate);
+    public abstract int Update(WideDataManager manager, ServerUpdate serverUpdate);
 
     protected LinkInfo GetSourceLink(string targetParamName) {
         foreach(LinkInfo l in _nodes.links) {

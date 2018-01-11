@@ -28,8 +28,9 @@ public class Fleet : DataObject{
 
 
     public int ID { get; private set; }
-
+    
     public string Data { get; set; }
+    public int CorpID { get; set; }
     public List<int> ShipIDs { get; set; }
     public int LastStation { get; set; }    
     public int LastHangar { get; set; }
