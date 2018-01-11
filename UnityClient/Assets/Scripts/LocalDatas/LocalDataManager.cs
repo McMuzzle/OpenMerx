@@ -401,7 +401,6 @@ public class LocalDataManager : MonoBehaviour {
             LocalCorporation = corps[cb.ID];
             MyShipList.SetLocalCorp(cb.ID);
         }
-            
     }
 
     private void CharacterUpdate(Character c) {

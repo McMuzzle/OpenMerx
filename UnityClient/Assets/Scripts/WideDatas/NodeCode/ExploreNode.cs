@@ -39,11 +39,15 @@ public class ExploreNode : ExecutableNode, IBookmarkParam, IBooleanParam{
     public Bookmark GetBookmark(string paramName) {
         if (paramName != InFlow)
             throw new Exception(paramName + " is not a bookmark param in ExploreNode");
-
+               
         NodeInfos n = _nodes.nodes[_myID];
         int id = n.nodeParams.GetInt("found", -1);
         if(id != -1) {
-            return _data._bookmarks[id];
+            Corporation corp = null;
+            foreach(Bookmark b in corp.Bookmarks) {
+                if (b.ID == id)
+                    return b;
+            }
         }
         return null;
     }
@@ -115,14 +119,16 @@ public class ExploreNode : ExecutableNode, IBookmarkParam, IBooleanParam{
                     didFound = true;
                     int index = r.Next(possible.Count);
                     PointOfInterest found = possible[index];
+                    Corporation c = _data._corps[_fleet.CorpID];
 
                     Bookmark bookmark = new Bookmark(_data._bookmarkIDs++, index);
                     bookmark.datas = found.DatasToBookmark();
-                    _data._bookmarks.Add(bookmark.ID, bookmark);
+                    c.Bookmarks.Add(bookmark);
+                    serverUpdate.Add(c);
 
                     n.nodeParams.Set("found", bookmark.ID);
 
-                    Corporation c = _data._corps[_fleet.CorpID];
+                    
                     SendMailRequest request = new SendMailRequest(-1, c.Owner);
                     request.Message = "You found something while exploring, congrat! \n\n" + found.Description;
                     request.Subject = "Exploration result";

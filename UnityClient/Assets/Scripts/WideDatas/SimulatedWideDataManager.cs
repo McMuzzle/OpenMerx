@@ -123,7 +123,6 @@ public class SimulatedWideDataManager : WideDataManager {
         public Dictionary<int, MailBox> _mailBoxs = null;
         public Dictionary<int, ResourceStack> _resourceStacks = null;
         public Dictionary<int, PointOfInterest> _POIs = null;
-        public Dictionary<int, Bookmark> _bookmarks = null;
         public List<MarketData> _market = null;
         public Dictionary<int, FlightPlan> _flightPlans = null;
         public Dictionary<int, Fleet> _fleets = null;
@@ -147,7 +146,6 @@ public class SimulatedWideDataManager : WideDataManager {
             _mailBoxs = new Dictionary<int, MailBox>();
             _resourceStacks = new Dictionary<int, ResourceStack>();
             _POIs = new Dictionary<int, PointOfInterest>();
-            _bookmarks = new Dictionary<int, Bookmark>();
             _market = new List<MarketData>();
             _flightPlans = new Dictionary<int, FlightPlan>();
             _fleets = new Dictionary<int, Fleet>();
@@ -243,7 +241,6 @@ public class SimulatedWideDataManager : WideDataManager {
         c.Character = _container._characters[c.Char];
         c.Hangar = h;
         c.Ship = s;
-
 
         FinishRequest(r);
     }

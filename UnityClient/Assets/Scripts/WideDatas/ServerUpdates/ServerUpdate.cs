@@ -39,4 +39,9 @@ public class ServerUpdate {
         if (!hangars.Contains(hangar))
             hangars.Add(hangar);
     }
+
+    public void Add(Corporation corp) {
+        if (!corps.Contains(corp))
+            corps.Add(corp);
+    }
 }

@@ -141,6 +141,7 @@ public class ToolsView : MonoBehaviour {
 
     private void OnBookmarkClic() {
         BookmarksView view = Instantiate(pref.prefabBookmarksView);
+        view.SetCorp(LocalDataManager.instance.LocalCorporation);
 
         Window w = sys.NewWindow("Bookmarks", view.gameObject);
         w.Title = "Bookmarks";

@@ -25,7 +25,18 @@
 using UnityEngine;
 
 public class BookmarksView : MonoBehaviour {
-    [SerializeField] BookmarkLineView linePrefab = null;
+    [SerializeField, Tooltip("le prefab a instancier pour chaque prefab")]
+    BookmarkLineView linePrefab = null;
+
+    [SerializeField, Tooltip("le transform ou instancier les prefabs")]
+    Transform content = null;
 
     public Bookmark Bookmark { get; private set; }
+
+    public void SetCorp(Corporation corp) {
+        foreach(Bookmark b in corp.Bookmarks) {
+            BookmarkLineView g = Instantiate(linePrefab, content);
+            g.SetBookmark(b);
+        }
+    }
 }

@@ -35,11 +35,12 @@ public class Corporation : DataObject{
 
     public int Owner { get; set; }
     public int Station { get; set; }
-    public List<int> Bookmarks { get; set; }
+    public List<Bookmark> Bookmarks { get; set; }
     public List<int> FlightPlans { get; set; }
     
     public Corporation(int id) {
         Ships = new List<int>();
+        Bookmarks = new List<Bookmark>();
         ID = id;
     }
 

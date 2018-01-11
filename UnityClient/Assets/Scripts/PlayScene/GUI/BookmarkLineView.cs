@@ -22,9 +22,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BookmarkLineView : MonoBehaviour {
+    [SerializeField, Tooltip("text contenant le nom du bookmark")]
+    Text bookmarkName = null;
+
+    [SerializeField, Tooltip("le button pour deleter ce bookmark")]
+    Button deleteButton = null;
+
+    private void Start() {
+        deleteButton.onClick.AddListener(OnClic);
+    }
+
+    public void SetBookmark(Bookmark b) {
+        bookmarkName.text = b.datas.GetString("name","name");
+    }
+
+    private void OnClic() {
+    }
 }
